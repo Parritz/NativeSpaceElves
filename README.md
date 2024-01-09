@@ -1,2 +1,9 @@
 # Native Space Elves on Jetbikes
-Currently only has movement and the code is really bad since I'm using this to learn OpenGL, so it all needs to be refactored still.
+A native C++ port for Space Elves on Jetbikes that'll run on Windows, Linux, and eventually there will be a port for N64. Still WIP.
+
+## Building on Windows
+Prerequisites:
+- g++
+- make
+
+Command to compile: `make`
