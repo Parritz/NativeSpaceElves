@@ -4,10 +4,10 @@
 class Player {
 	public:
 		GLuint shaderProgram;
+		GLuint shaderProgram2;
 	
 		Player(GLFWwindow* window, SpriteRenderer* spriteRenderer);
 		void update();
-		void move(float x, float y);
 		void processInput();
 	private:
 		SpriteRenderer* spriteRenderer;
@@ -15,5 +15,6 @@ class Player {
 		
 		float xPos = 0.0f;
 		float yPos = 0.0f;
-		float movementSpeed = 0.001f;
+		float movementSpeed = 1.0f;
+		bool movingRight = true;
 };

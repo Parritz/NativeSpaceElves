@@ -1,4 +1,4 @@
-# pragma once
+#pragma once
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -15,6 +15,5 @@ class SpriteRenderer {
         ~SpriteRenderer();
         GLuint loadTexture(const char* texturePath);
         GLuint compileShader(const char *vertexShaderSource, const char *fragmentShaderSource);
-        GLuint drawSprite(const char* texturePath, GLuint shader);
-        void destroySprite(GLuint sprite);
+        void drawSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, GLuint shader, GLFWwindow* window);
 };

@@ -85,55 +85,40 @@ GLuint SpriteRenderer::compileShader(const char* vertexShaderSource, const char*
 	return shaderProgram;
 }
 
-GLuint SpriteRenderer::drawSprite(const char* texturePath, GLuint shader) {
-	// Load the texture that will be drawn onto the sprite
-	GLuint texture = this->loadTexture(texturePath);
+void SpriteRenderer::drawSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, GLuint shader, GLFWwindow* window) {
+    // Get the window's width and height
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
 
-	// Creates square/rectangle with two triangles
-	unsigned int indices[] = {
-		0, 1, 3,  // First triangle
-		1, 2, 3   // Second triangle
-	};
+    // Load the texture that will be drawn onto the sprite
+    GLuint texture = this->loadTexture(texturePath);
+    glm::vec2 spriteSize = size / glm::vec2(width, height);
 
-	float spriteSize = 0.05f;
-	float vertices[] = {
-		// Positions                  // Texture Coordinates
-		spriteSize,  spriteSize, 0.0f, 1.0f, 1.0f,  // Top Right
-		spriteSize, -spriteSize, 0.0f, 1.0f, 0.0f,  // Bottom Right
-		-spriteSize, -spriteSize, 0.0f, 0.0f, 0.0f,  // Bottom Left
-		-spriteSize,  spriteSize, 0.0f, 0.0f, 1.0f   // Top Left
-	};
+    // Creates square/rectangle with two triangles
+    unsigned int indices[] = {
+        0, 1, 3,  // First triangle
+        1, 2, 3   // Second triangle
+    };
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    float vertices[] = {
+        // Positions                  // Texture Coordinates
+        spriteSize.x,  spriteSize.y, 0.0f, 1.0f, 1.0f,  // Top Right
+        spriteSize.x, -spriteSize.y, 0.0f, 1.0f, 0.0f,  // Bottom Right
+        -spriteSize.x, -spriteSize.y, 0.0f, 0.0f, 0.0f,  // Bottom Left
+        -spriteSize.x,  spriteSize.y, 0.0f, 0.0f, 1.0f   // Top Left
+    };
+
+    glBindVertexArray(VAO);  // Rebind the VAO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);  // Rebind the VBO
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    glUseProgram(shader);
+    glUniform2f(glGetUniformLocation(shader, "playerPos"), position.x, position.y);
+    glUniform2f(glGetUniformLocation(shader, "windowSize"), width, height);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-	// glBindVertexArray(this->VAO);
-	// glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-
-	// // Load vertex data into VBO then draw the sprite
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	// glBindVertexArray(this->VAO);
-	// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-	// // Unbind VAO and VBO
-	// glBindVertexArray(0);
-	// glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	return texture;
-}
-
-void SpriteRenderer::destroySprite(GLuint sprite) {
-	glDeleteTextures(1, &sprite);
+    // Draw the sprite
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

@@ -6,10 +6,15 @@ Player::Player(GLFWwindow* window, SpriteRenderer* spriteRenderer) {
 		layout (location = 0) in vec3 aPos;
 		layout (location = 1) in vec2 aTexCoord;
 		out vec2 TexCoord;
-		uniform mat4 model;  // Model matrix
-		uniform vec2 playerPos;  // Player position
+		uniform vec2 playerPos; // Player position in pixels
+		uniform vec2 windowSize;
+
 		void main() {
-			gl_Position = model * vec4(aPos.x + playerPos.x, aPos.y + playerPos.y, aPos.z, 1.0);
+			// Convert from pixel coordinates to normalized device coordinates (-1 to 1) that OpenGL uses
+			vec2 normalizedPlayerPos = (playerPos / vec2(windowSize.x, -windowSize.y)) * 2.0 - 1.0;
+			
+			// Transform position using pixel-based player position
+			gl_Position = vec4(aPos.x + normalizedPlayerPos.x, aPos.y - normalizedPlayerPos.y, aPos.z, 1.0);
 			TexCoord = aTexCoord;
 		}
 	)";
@@ -22,32 +27,22 @@ Player::Player(GLFWwindow* window, SpriteRenderer* spriteRenderer) {
 		void main() {
 			vec4 texColor = texture(ourTexture, TexCoord);
 			FragColor = texColor;
-	})";
-
-	GLuint shaderProgram = spriteRenderer->compileShader(vertexShaderSource, fragmentShaderSource);
-	GLuint playerSprite = spriteRenderer->drawSprite("assets/jetbike.png", shaderProgram);	
+		}
+	)";
 	
 	this->window = window;
 	this->spriteRenderer = spriteRenderer;
-	this->shaderProgram = shaderProgram;
+	this->shaderProgram = spriteRenderer->compileShader(vertexShaderSource, fragmentShaderSource);
 }
 
 // Called every frame
 void Player::update() {
 	this->processInput();
-	this->move(this->xPos, this->yPos);
-}
 
-// Moves player to the designated x and y coordinates
-void Player::move(float x, float y) {
-	std::cout << "Position: X: " << x << " | Y: " << y << std::endl;
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(x, y, 0.0f));
-
-	// Use shader and set position
-	glUseProgram(shaderProgram);
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	glUniform2f(glGetUniformLocation(shaderProgram, "playerPos"), x, y);
+	// Render sprite
+	const char* jetbikeAsset = movingRight ? "assets/sprites/jetbike.png" : "assets/sprites/jetbike_l.png";
+	this->spriteRenderer->drawSprite("assets/sprites/shadow.png", glm::vec2(this->xPos, this->yPos - 24), glm::vec2(48, 48), this->shaderProgram, this->window);	
+	this->spriteRenderer->drawSprite(jetbikeAsset, glm::vec2(this->xPos, this->yPos), glm::vec2(78, 48), this->shaderProgram, this->window);	
 }
 
 void Player::processInput() {
@@ -68,10 +63,12 @@ void Player::processInput() {
 	// Left
 	if (glfwGetKey(this->window, GLFW_KEY_A) == GLFW_PRESS) {
 		this->xPos -= this->movementSpeed;
+		this->movingRight = false;
 	}
 
 	// Right
 	if (glfwGetKey(this->window, GLFW_KEY_D) == GLFW_PRESS) {
 		this->xPos += this->movementSpeed;
+		this->movingRight = true;
 	}
 }

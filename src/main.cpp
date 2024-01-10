@@ -37,9 +37,9 @@ int main() {
 		// Handle player
 		player->update();
 		
-		glBindVertexArray(spriteRenderer->VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		// glBindVertexArray(spriteRenderer->VAO);
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		// glBindVertexArray(0);
 
 		// Check for events in queue, then swap window buffers
 		glfwPollEvents();
