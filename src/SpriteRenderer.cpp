@@ -91,7 +91,16 @@ void SpriteRenderer::drawSprite(const char* texturePath, glm::vec2 position, glm
     glfwGetWindowSize(window, &width, &height);
 
     // Load the texture that will be drawn onto the sprite
-    GLuint texture = this->loadTexture(texturePath);
+	// Use texture cache to avoid high memory usage
+	GLuint texture;
+	if (this->textureCache.find(texturePath) == this->textureCache.end()) {
+		texture = loadTexture(texturePath);
+		this->textureCache.insert(std::make_pair(texturePath, texture));
+	} else {
+		texture = this->textureCache[texturePath];
+	}
+
+	glBindTexture(GL_TEXTURE_2D, texture);
     glm::vec2 spriteSize = size / glm::vec2(width, height);
 
     // Creates square/rectangle with two triangles
@@ -121,4 +130,6 @@ void SpriteRenderer::drawSprite(const char* texturePath, glm::vec2 position, glm
 
     // Draw the sprite
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
