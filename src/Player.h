@@ -4,7 +4,6 @@
 class Player {
 	public:
 		GLuint shaderProgram;
-		GLuint shaderProgram2;
 	
 		Player(GLFWwindow* window, SpriteRenderer* spriteRenderer);
 		void update();
