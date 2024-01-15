@@ -1,6 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "SpriteRenderer.h"
 #include "Player.h"
+#include "Map.h"
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
@@ -28,19 +29,17 @@ int main() {
 
 	SpriteRenderer* spriteRenderer = new SpriteRenderer();
 	Player* player = new Player(window, spriteRenderer);
+	Map* map = new Map(window, spriteRenderer);
 	
 	while (!glfwWindowShouldClose(window)) {
 		// Clear screen
 		glClearColor(0.2f, 0.2f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Handle player
+		// Handle tick events
+		map->update();
 		player->update();
 		
-		// glBindVertexArray(spriteRenderer->VAO);
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		// glBindVertexArray(0);
-
 		// Check for events in queue, then swap window buffers
 		glfwPollEvents();
 		glfwSwapBuffers(window);

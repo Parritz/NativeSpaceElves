@@ -4,7 +4,7 @@
 class Player {
 	public:
 		GLuint shaderProgram;
-	
+
 		Player(GLFWwindow* window, SpriteRenderer* spriteRenderer);
 		void update();
 		void processInput();
