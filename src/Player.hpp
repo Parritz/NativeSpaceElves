@@ -1,5 +1,5 @@
 #pragma once
-#include "SpriteRenderer.h"
+#include "SpriteRenderer.hpp"
 
 class Player {
 	public:

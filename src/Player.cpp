@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Player.hpp"
 
 Player::Player(GLFWwindow* window, SpriteRenderer* spriteRenderer) {
 	this->window = window;
@@ -70,4 +70,4 @@ void Player::processInput() {
 		this->xPos += this->movementSpeed;
 		this->movingRight = true;
 	}
-}
+} 

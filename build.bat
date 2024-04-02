@@ -1,1 +1,0 @@
-make && spaceelves.exe

@@ -1,18 +1,23 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "SpriteRenderer.h"
-#include "Player.h"
-#include "Map.h"
+#include "SpriteRenderer.hpp"
+#include "Player.hpp"
+#include "Map.hpp"
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
+
+unsigned int squareIndices[] = {
+	0, 1, 3,	// First triangle
+	1, 2, 3		// Second triangle
+};
 
 int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+	
 	GLFWwindow* window = glfwCreateWindow(1280, 800, "Space Elves", nullptr, nullptr);
 	if (!window) {
 		glfwTerminate();

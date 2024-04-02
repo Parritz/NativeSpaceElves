@@ -1,4 +1,4 @@
-#include "SpriteRenderer.h"
+#include "SpriteRenderer.hpp"
 
 // Creates square/rectangle with two triangles
 unsigned int squareIndices[] = {

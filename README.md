@@ -3,7 +3,6 @@ A native C++ port for Space Elves on Jetbikes that'll run on Windows, Linux, and
 
 ## Building on Windows
 Prerequisites:
-- g++
-- make
+- cmake
 
-Command to compile: `make`
+Command to compile: `mkdir build && cd build && cmake ..`

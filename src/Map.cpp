@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "Map.hpp"
 
 Map::Map(GLFWwindow* window, SpriteRenderer* spriteRenderer) {
     this->spriteRenderer = spriteRenderer;

@@ -32,13 +32,12 @@ class SpriteRenderer {
 				// Convert from pixel coordinates to normalized device coordinates (-1 to 1) that OpenGL uses
 				vec2 normalizedPosition = (position / vec2(windowSize.x, -windowSize.y)) * 2.0 - 1.0;
 				vec2 normalizedCamera = (viewPosition / vec2(windowSize.x, -windowSize.y)) * 2.0 - 1.0;
-
-				// Apply the view matrix only to the x and y components
+				
 				vec4 viewPos = vec4((aPos.x + normalizedPosition.x) * viewScale - normalizedCamera.x,
 									(aPos.y - normalizedPosition.y) * viewScale + normalizedCamera.y,
 									aPos.z, 1.0);
 
-				// Transform position using pixel-based player position
+				// Transform position using pixel-based position
 				gl_Position = viewPos;
 				TexCoord = aTexCoord;
 			}
