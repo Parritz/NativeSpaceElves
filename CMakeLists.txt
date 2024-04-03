@@ -6,8 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 # Include directories
 include_directories(include)
 
-# Source files
+# Source files and assets
 file(GLOB SOURCES src/*.cpp src/*.hpp)
+file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 
 # Add GLAD source file
 set(GLAD_SRC include/glad.c)

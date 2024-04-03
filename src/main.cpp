@@ -7,11 +7,6 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
-unsigned int squareIndices[] = {
-	0, 1, 3,	// First triangle
-	1, 2, 3		// Second triangle
-};
-
 int main() {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
