@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
 
 # Source files and assets
-file(GLOB SOURCES src/*.cpp src/*.hpp)
+file(GLOB_RECURSE SOURCES src/*.cpp src/*.hpp)
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 
 # Add GLAD source file

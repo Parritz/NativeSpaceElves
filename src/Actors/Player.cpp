@@ -11,13 +11,13 @@ void Player::update() {
 
 	// Render player sprite and shadow
 	const char* jetbikeAsset = movingRight ? "assets/sprites/jetbike.png" : "assets/sprites/jetbike_l.png";
-	this->spriteRenderer->drawSprite("assets/sprites/shadow.png", glm::vec2(this->xPos, this->yPos - 24), glm::vec2(48, 48), spriteRenderer->defaultShader, this->window);	
-	this->spriteRenderer->drawSprite(jetbikeAsset, glm::vec2(this->xPos, this->yPos), glm::vec2(78, 48), spriteRenderer->defaultShader, this->window);
+	this->spriteRenderer->drawSprite("assets/sprites/shadow.png", glm::vec2(this->xPos, this->yPos - 24), glm::vec2(48, 48), spriteRenderer->defaultShader);	
+	this->spriteRenderer->drawSprite(jetbikeAsset, glm::vec2(this->xPos, this->yPos), glm::vec2(78, 48), spriteRenderer->defaultShader);
 	
 	glm::vec2 cameraPosition = glm::vec2(this->xPos, this->yPos);
 	spriteRenderer->setCameraPosition(cameraPosition);
 
-	// Render crosshair
+	// Get cursor position
 	double cursorXPos, cursorYPos;
 	glfwGetCursorPos(this->window, &cursorXPos, &cursorYPos);
 
@@ -40,7 +40,8 @@ void Player::update() {
 		double crosshairX = this->xPos + angleX * scaleFactor;
 		double crosshairY = this->yPos - angleY * scaleFactor;
 
-		this->spriteRenderer->drawSprite("assets/sprites/xhair.png", glm::vec2(crosshairX, crosshairY), glm::vec2(16, 16), spriteRenderer->defaultShader, this->window);
+		// Render crosshair
+		this->spriteRenderer->drawSprite("assets/sprites/xhair.png", glm::vec2(crosshairX, crosshairY), glm::vec2(16, 16), spriteRenderer->defaultShader);
 	}
 }
 

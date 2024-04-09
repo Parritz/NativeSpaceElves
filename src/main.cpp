@@ -1,9 +1,10 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "SpriteRenderer.hpp"
-#include "Player.hpp"
+#include "Renderers/SpriteRenderer.hpp"
+#include "Renderers/UIRenderer.hpp"
+#include "Actors/Player.hpp"
 #include "Map.hpp"
 
-void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
@@ -19,15 +20,17 @@ int main() {
 		return -1;
 	}
 
+	// Setup GLFW and glad
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
-
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		glfwTerminate();
 		return -1;
 	}
 
-	SpriteRenderer* spriteRenderer = new SpriteRenderer();
+	// Setup game
+	SpriteRenderer* spriteRenderer = new SpriteRenderer(window);
+	UIRenderer* uiRenderer = new UIRenderer(window);
 	Player* player = new Player(window, spriteRenderer);
 	Map* map = new Map(window, spriteRenderer);
 	
@@ -39,6 +42,7 @@ int main() {
 		// Handle tick events
 		map->update();
 		player->update();
+		uiRenderer->update();
 		
 		// Check for events in queue, then swap window buffers
 		glfwPollEvents();

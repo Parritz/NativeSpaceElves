@@ -1,21 +1,9 @@
 #pragma once
-#include <iostream>
-#include <vector>
-#include <tuple>
-#include <unordered_map>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "stb_image.h"
+#include "Renderer.hpp"
 
 class SpriteRenderer {
     public:
         GLuint VBO, VAO, EBO;
-		float cameraXPos = 0;
-		float cameraYPos = 0;
-		float cameraScale = 1;
 
         // Default shader sources to use
         const char* vertexShaderSource = R"(
@@ -54,15 +42,14 @@ class SpriteRenderer {
 			}
 		)";
 		
-        GLuint defaultShader = this->compileShader(this->vertexShaderSource, this->fragmentShaderSource);
+        GLuint defaultShader = Renderer::compileShader(this->vertexShaderSource, this->fragmentShaderSource);
 
-        SpriteRenderer();
+        SpriteRenderer(GLFWwindow* window);
         ~SpriteRenderer();
-        GLuint loadTexture(const char* texturePath);
-        GLuint compileShader(const char *vertexShaderSource, const char *fragmentShaderSource);
 		void setCameraPosition(glm::vec2 cameraPosition);
-        void drawSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, GLuint shader, GLFWwindow* window);
-        void drawRepeatingSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, glm::vec2 resolutionSize, GLuint shader, GLFWwindow* window);
+        void drawSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, GLuint shader);
+        void drawRepeatingSprite(const char* texturePath, glm::vec2 position, glm::vec2 size, glm::vec2 resolutionSize, GLuint shader);
+
     private:
-        std::unordered_map<std::string, GLuint> textureCache;
+		GLFWwindow* window;
 };
